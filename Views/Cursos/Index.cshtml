@@ -1,0 +1,61 @@
+@model IEnumerable<PortalAcademico.Models.Curso>
+
+@{
+    ViewData["Title"] = "Catálogo de Cursos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get" class="mb-3">
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text" name="nombre" class="form-control" placeholder="Buscar por nombre" value="@Request.Query["nombre"]" />
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="creditosMin" class="form-control" placeholder="Créditos desde" value="@Request.Query["creditosMin"]" />
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="creditosMax" class="form-control" placeholder="Créditos hasta" value="@Request.Query["creditosMax"]" />
+        </div>
+        <div class="col-md-2">
+            <input type="time" name="horarioInicio" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <input type="time" name="horarioFin" class="form-control" />
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">No se encontraron cursos.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Créditos</th>
+                <th>Horario</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var curso in Model)
+        {
+            <tr>
+                <td>@curso.Codigo</td>
+                <td>@curso.Nombre</td>
+                <td>@curso.Creditos</td>
+                <td>@curso.HorarioInicio - @curso.HorarioFin</td>
+                <td><a asp-action="Details" asp-route-id="@curso.Id" class="btn btn-info btn-sm">Ver detalle</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
