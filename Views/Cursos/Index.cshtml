@@ -1,0 +1,71 @@
+@model IEnumerable<PortalAcademico.Models.Curso>
+@{
+    ViewData["Title"] = "Catálogo de Cursos";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Catálogo de Cursos</h2>
+
+    <!-- 🔍 Formulario de búsqueda -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="nombre" class="form-control"
+                   placeholder="Buscar por nombre"
+                   value="@ViewData["nombre"]" />
+        </div>
+
+        <div class="col-md-3">
+            <input type="number" name="creditosMin" class="form-control"
+                   placeholder="Créditos mínimos"
+                   value="@ViewData["creditosMin"]" />
+        </div>
+
+        <div class="col-md-3">
+            <input type="number" name="creditosMax" class="form-control"
+                   placeholder="Créditos máximos"
+                   value="@ViewData["creditosMax"]" />
+        </div>
+
+        <div class="col-md-2 text-end">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </form>
+
+    <!-- 📋 Tabla de cursos -->
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Créditos</th>
+                <th>Horario</th>
+                <th>Cupo Máximo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var curso in Model)
+        {
+            <tr>
+                <td>@curso.Codigo</td>
+                <td>@curso.Nombre</td>
+                <td>@curso.Creditos</td>
+                <td>@curso.HorarioInicio.ToString(@"hh\:mm") - @curso.HorarioFin.ToString(@"hh\:mm")</td>
+                <td>@curso.CupoMaximo</td>
+                <td>
+                    <a asp-action="Detalle" asp-route-id="@curso.Id" class="btn btn-outline-primary btn-sm">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            No se encontraron cursos con los filtros seleccionados.
+        </div>
+    }
+</div>
